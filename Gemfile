@@ -7,5 +7,6 @@ end
 gem 'braintree'
 
 gem 'spree', :github => "spree/spree", :branch => "1-3-stable"
+gem 'recurly', '~> 2.1.8'
 
 gemspec
