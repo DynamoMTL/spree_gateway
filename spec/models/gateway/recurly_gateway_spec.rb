@@ -28,6 +28,8 @@ describe Spree::Gateway::RecurlyGateway do
     )
   }
 
+  let(:account_errors) { stub('Recurly:Errors', present?: false) }
+
   before do
     subject.set_preference :subdomain, subdomain
     subject.set_preference :api_key, api_key
@@ -76,7 +78,7 @@ describe Spree::Gateway::RecurlyGateway do
             country: 'United States',
             state: 'Oregon',
           }
-        }).and_return(stub(account_code: payment.order.user.id, errors: nil))
+        }).and_return(stub(account_code: payment.order.user.id, errors: account_errors))
 
         subject.create_profile payment
       end
