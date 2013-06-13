@@ -5,7 +5,7 @@ group :test do
   gem 'sqlite3'
 end
 gem 'braintree'
-
+gem 'recurly', '~> 2.1.8'
 gem 'spree', :github => "spree/spree", :branch => "master"
 
 gemspec
