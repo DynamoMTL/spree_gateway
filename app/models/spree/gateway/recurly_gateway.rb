@@ -73,7 +73,7 @@ module Spree
         :billing_info => billing_info_for(payment)
       )
 
-      if account.errors
+      if account.errors.present?
         payment.send(:gateway_error, account.errors.full_messages.join('. '))
       else
         payment.source.update_attributes!(:gateway_customer_profile_id => account.account_code)
