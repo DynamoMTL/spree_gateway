@@ -121,8 +121,8 @@ describe Spree::Gateway::RecurlyGateway do
       end
     end
 
-    context 'creditting' do
-      it 'should send the creditting to the provider' do
+    context 'crediting' do
+      it 'should send the crediting to the provider' do
         transaction = stub.as_null_object
         Recurly::Transaction.should_receive(:find).with('a13acd8fe4294916b79aec87b7ea441f').and_return(transaction)
 
