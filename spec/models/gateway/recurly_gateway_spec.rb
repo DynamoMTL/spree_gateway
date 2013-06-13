@@ -48,9 +48,8 @@ describe Spree::Gateway::RecurlyGateway do
     }
 
     context 'with an order that has a bill address' do
-
-      it 'stores the bill address with the provider' do
-        Recurly::Account.should_receive(:create).with({
+      let(:billing_attributes) {
+        {
           account_code: 1,
           email: 'smith@test.com',
           first_name: 'Tom',
@@ -78,9 +77,36 @@ describe Spree::Gateway::RecurlyGateway do
             country: 'United States',
             state: 'Oregon',
           }
-        }).and_return(stub(account_code: payment.order.user.id, errors: account_errors))
+        }
+      }
 
-        subject.create_profile payment
+      context 'given valid billing info' do
+        it 'stores the bill address with the provider' do
+          Recurly::Account.should_receive(:create)
+                          .with(billing_attributes)
+                          .and_return(stub(account_code: payment.order.user.id, errors: account_errors))
+
+          subject.create_profile payment
+        end
+      end
+
+      context 'given invalid billing info' do
+
+        before do
+          stub_const('Recurly::Transaction::Error', StandardError)
+          payment.stub(:gateway_error)
+        end
+
+        let(:transaction_declined) { StandardError.new("Invalid billing info") }
+
+        it 'assigns an error to the payment gateway' do
+          Recurly::Account.should_receive(:create)
+                          .with(billing_attributes)
+                          .and_raise(transaction_declined)
+
+          payment.should_receive(:gateway_error).with("Invalid billing info")
+          subject.create_profile payment
+        end
       end
     end
   end
