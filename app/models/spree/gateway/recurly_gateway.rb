@@ -78,6 +78,9 @@ module Spree
       else
         payment.source.update_attributes!(:gateway_customer_profile_id => account.account_code)
       end
+
+    rescue Recurly::Transaction::Error => e
+      payment.send(:gateway_error, e.message)
     end
 
     private
