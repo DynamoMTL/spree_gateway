@@ -42,7 +42,7 @@ module Spree
 
       ActiveMerchant::Billing::Response.new(transaction.status == 'success', message, {},
         :authorization => transaction.uuid,
-        :avs_result => transaction.avs_result
+        :avs_result => {:street_match => transaction.avs_result }
       )
     end
 
@@ -57,7 +57,7 @@ module Spree
 
       ActiveMerchant::Billing::Response.new(transaction.status == 'void', message, {},
         :authorization => transaction.uuid,
-        :avs_result => transaction.avs_result
+        :avs_result => {:street_match => transaction.avs_result }
       )
     end
 
@@ -108,7 +108,7 @@ module Spree
 
       ActiveMerchant::Billing::Response.new(transaction.status == 'success', message, {},
         :authorization => transaction.uuid,
-        :avs_result => transaction.avs_result
+        :avs_result => {:street_match => transaction.avs_result }
       )
     end
 
