@@ -64,12 +64,12 @@ module Spree
     def create_profile(payment)
       return unless payment.source.gateway_customer_profile_id.nil?
 
-      account = begin
-        Recurly::Account.find(payment.order.user_id)
+      begin
+        account = Recurly::Account.find(payment.order.user_id)
         account.billing_info = billing_info_for(payment).merge(address_info_for(payment))
         account.billing_info.save
       rescue Recurly::Resource::NotFound => e
-        Recurly::Account.create(
+        account = Recurly::Account.create(
           :account_code => payment.order.user_id,
           :email        => payment.order.email,
           :first_name   => payment.order.bill_address.try(:firstname),
