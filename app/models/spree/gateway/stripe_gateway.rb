@@ -60,7 +60,7 @@ module Spree
 
       if customer = creditcard.gateway_customer_profile_id
         options[:customer] = customer
-        creditcard = nil
+        creditcard = creditcard.gateway_payment_profile_id.present? ? creditcard.gateway_payment_profile_id : nil
       elsif token = creditcard.gateway_payment_profile_id
         # The Stripe ActiveMerchant gateway supports passing the token directly as the creditcard parameter
         creditcard = token
